@@ -2,7 +2,7 @@ import './App.css';
 import {useEffect, useRef } from "react"
 
 
-function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEndY, Platform, platform, platforms, enemy, blade}) {
+function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEndY, Platform, Platforms, enemy, Blade, Blades}) {
   /*const light = props.light
   const player = props.player
   const laserValocityX = props.laserValocityX
@@ -49,16 +49,16 @@ function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEnd
       ////platforms
       /*context.fillStyle = platform.color
       context.fillRect(platform.x , platform.y, platform.width, platform.height)*/
-      platforms.forEach((platform) => {
+      Platforms.forEach((platform) => {
         Platform.drawitem(context, platform)
       })
       
       ////enemy
       //context.clearRect(player.x, player.y, player.width+10, player.height+10)
       enemy.drawitem(context)
-
-      blade.drawitem(context)
-
+      Blades.forEach((blade) => {
+        Blade.drawitem(context, blade)
+      })
       ////protagonist
       player.drawitem(context)
       
@@ -70,7 +70,7 @@ function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEnd
       player.y += player.valocityY
       laserEndX += laserValocityX
       laserEndY += laserValocityY
-      
+      //player.eyeColor = "white"
       if(player.y + player.height + player.valocityY <= canvas.height){
         player.valocityY += gravity
         laserValocityY += gravity
@@ -90,13 +90,7 @@ function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEnd
          player.y + player.height + player.valocityY >= enemy.y && player.y <= enemy.y + enemy.height
         ){
         player.eyeColor = "red"
-      } else if(player.x + player.width + player.valocityX >= blade.x && player.x <= blade.x + blade.width &&
-        player.y + player.height + player.valocityY >= blade.y && player.y <= blade.y + blade.height
-        ){
-        player.eyeColor = "red"
-      } else {
-       player.eyeColor = "white"
-      }
+      } 
       /*if(laserValocityX === 300){
         laserValocityX = 0
       }*/
@@ -139,23 +133,26 @@ function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEnd
         laserValocityX = 0
 
         if(keys.right.pressed){
-          platforms.forEach((platform) => {
+          Platforms.forEach((platform) => {
             platform.x -= 8
             onlyOneTime = true
           })
-          blade.x -= 8
+          Blades.forEach((blade) => {
+            blade.x -= 8
+          })
           enemy.x -= 8
         } else if(keys.left.pressed) {
-          platforms.forEach((platform) => {
+          Platforms.forEach((platform) => {
             platform.x += 8
           })
-          blade.x += 8
+          Blades.forEach((blade) => {
+            blade.x += 8
+          })
           enemy.x += 8
         } 
       } 
-
       ////platform 
-      platforms.forEach((platform) => {
+      Platforms.forEach((platform) => {
         if(player.x + player.width >= platform.x && player.x <= platform.x + platform.width &&
           player.y + player.height <= platform.y && player.y + player.height + player.valocityY >= platform.y
          ){
@@ -164,19 +161,31 @@ function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEnd
         }
       })
 
+      ////blades
+      Blades.forEach((blade) => {
+        if(player.x + player.width + player.valocityX >= blade.x && player.x <= blade.x + blade.width &&
+          player.y + player.height + player.valocityY >= blade.y && player.y <= blade.y + blade.height
+          ){
+          player.eyeColor = "red"
+          setTimeout(() => {
+            player.eyeColor = "white"
+          }, 1000)
+        }
+      })
+
       if(keys.up.pressed && player.y > 100 && player.valocityY === 0){
         player.valocityY = -60
         laserValocityY = -60
       } 
       
-      if(onlyOneTime && player.x >= platforms[1].x + platforms[1].width/4 && player.x <= platforms[1].x + platforms[1].width/2){
+      if(onlyOneTime && player.x >= Platforms[1].x + Platforms[1].width/4 && player.x <= Platforms[1].x + Platforms[1].width/2){
         console.log("mooove")
-        console.log(platforms[1].x)
-        platforms[1].x -= 150
+        console.log(Platforms[1].x)
+        Platforms[1].x -= 150
         setTimeout(() => {
-          platforms[1].x += 150
+          Platforms[1].x += 150
         }, 1500)
-        console.log(platforms[1].x)
+        console.log(Platforms[1].x)
       }
       onlyOneTime = false
     }
@@ -215,7 +224,7 @@ function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEnd
       if(light.x <= enemy.x + enemy.width && light.x >= enemy.x &&
          light.y <= enemy.y + enemy.height && light.y >= enemy.y
          ){
-        enemy.color = "blue"
+        enemy.color = "black"
         console.log("touch")
       } else {
         enemy.color = "#222831"

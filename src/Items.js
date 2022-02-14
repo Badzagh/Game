@@ -41,7 +41,7 @@ function Items (){
   const player = {
     x: 200,
     y: 500,
-    width: 100,
+    width: 40,
     height: 100,
     color: 'black',
     eyeColor: "white",
@@ -64,27 +64,27 @@ function Items (){
     drawitem(context){
       //left ear
       context.fillStyle = "gray"
-      context.fillRect(player.x + 30, player.y, 2, 30)
+      context.fillRect(player.x, player.y, 2, 30)
 
       //right ear
       context.fillStyle = "gray"
-      context.fillRect(player.x + 68, player.y, 2, 30)
+      context.fillRect(player.x + 38, player.y, 2, 30)
 
       //head
       context.fillStyle = "gray"
-      context.fillRect(player.x + 30, player.y + 30, 40, 10)
+      context.fillRect(player.x, player.y + 30, 40, 10)
 
       //body
       context.fillStyle = "gray"
-      context.fillRect(player.x + 40, player.y + 25, 20, 50)
+      context.fillRect(player.x + 10, player.y + 25, 20, 50)
 
       //eye
       context.fillStyle = player.eyeColor
       context.beginPath()
-      context.moveTo(player.x + 50, player.y + 45)
-      context.lineTo(player.x + 45, player.y + 35)
-      context.lineTo(player.x + 55, player.y + 35)
-      context.lineTo(player.x + 50, player.y + 45)
+      context.moveTo(player.x + 20, player.y + 45)
+      context.lineTo(player.x + 15, player.y + 35)
+      context.lineTo(player.x + 25, player.y + 35)
+      context.lineTo(player.x + 20, player.y + 45)
       context.fill()
       context.closePath()
 
@@ -94,34 +94,34 @@ function Items (){
       context.beginPath();
       context.arc(player.x + player.width/2 + laserValocityX, player.y + 38, 3, 0, 2 * Math.PI);
       context.fill()*/
-      context.beginPath();
+      ////////////////context.beginPath();
       /*context.moveTo(player.x + player.width/2, player.y + 38)
       context.lineTo(laserEndX, laserEndY);*/
-      context.moveTo(laserEndX, laserEndY)
-      context.lineTo(player.x + player.width/2, player.y + 38);
+      ////////////////context.moveTo(laserEndX, laserEndY)
+      ////////////////context.lineTo(player.x + player.width/2, player.y + 38);
       //context.lineTo(player.x + player.width/2 + laserValocityX, player.y + 38 + laserValocityY);
-      context.strokeStyle = 'red';
-      context.stroke();
+      ////////////////context.strokeStyle = 'red';
+      ////////////////context.stroke();
 
 
       //left leg
       context.fillStyle = 'gray'
       context.beginPath()
-      context.moveTo(player.x + 40, player.y + 100)
-      context.lineTo(player.x + 40, player.y + 50)
-      context.lineTo(player.x + 55, player.y + 50)
-      context.lineTo(player.x + 40, player.y + 100)
+      context.moveTo(player.x + 10, player.y + 100)
+      context.lineTo(player.x + 10, player.y + 50)
+      context.lineTo(player.x + 25, player.y + 50)
+      context.lineTo(player.x + 10, player.y + 100)
       context.fill()
       context.closePath()
 
       //right leg
       context.fillStyle = 'gray'
       context.beginPath()
-      context.moveTo(player.x + 60, player.y + 100)
-      context.lineTo(player.x + 45, player.y + 50)
+      context.moveTo(player.x + 30, player.y + 100)
+      context.lineTo(player.x + 15, player.y + 50)
       //context.bezierCurveTo(player.x + 120, player.y, player.x + 120, player.y + 200, player.x + 60, player.y + 200);
-      context.lineTo(player.x + 60, player.y + 50)
-      context.lineTo(player.x + 60, player.y + 100)
+      context.lineTo(player.x + 30, player.y + 50)
+      context.lineTo(player.x + 30, player.y + 100)
       context.fill()
       context.closePath()
     }
@@ -156,7 +156,7 @@ function Items (){
   //const platform = new Platform(400, 400)
   //const platforms = [new Platform(400, 400), new Platform(1000, 400)]
   const platform = Platform(400, 400)
-  const platforms = [Platform(600, 350), Platform(1200, 400), Platform(1600, 300), Platform(1910, 400), Platform(2300, 300), Platform(2800, 450),Platform(3200, 400)]
+  const Platforms = [Platform(600, 350), Platform(1200, 400), Platform(1580, 300), Platform(1840, 400), Platform(2200, 300), Platform(2700, 450),Platform(3100, 400)]
 
 
   ////enemy
@@ -180,23 +180,28 @@ function Items (){
 
   enemy.drawitem = enemyAction.drawitem
 
-  const blade = {
-    x: 1300,
-    y: 500,
-    width: 20,
-    height: 100,
-    valocityX: 0,
-    valocityY: 0
+  const Blade = (positionX, positionY, widthB, heightB, colorB) =>  {
+    return {
+      x: positionX,
+      y: positionY,
+      width: widthB,
+      height: heightB,
+      valocityX: 0,
+      valocityY: 0,
+      color: colorB
+    }
   }
 
   const bladeAction = {
-    drawitem(context){
-      context.fillStyle = "black"
+    drawitem(context, blade){
+      context.fillStyle = blade.color
       context.fillRect(blade.x, blade.y, blade.width, blade.height)
     }
   }
 
-  blade.drawitem = bladeAction.drawitem
+  Blade.drawitem = bladeAction.drawitem
+
+  const Blades = [Blade(1300, 500, 20, 100, "black"), Blade(1600, 400, 100, 200, "black"), Blade(1840, 350, 50, 50, "black"), Blade(1890, 380, 120, 20, "blue"), Blade(2200, 350, 200, 20, "blue"), Blade(2660, 450, 40, 150, "blue"), Blade(2700, 150, 200, 40, "blue")]
 
   return (
     <div>
@@ -208,10 +213,10 @@ function Items (){
         laserEndX={laserEndX}
         laserEndY={laserEndY}
         Platform={Platform}
-        platform={platform}
-        platforms={platforms}
+        Platforms={Platforms}
         enemy={enemy}
-        blade={blade}
+        Blade={Blade}
+        Blades={Blades}
       />
     </div>
   );
