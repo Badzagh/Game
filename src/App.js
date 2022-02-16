@@ -1,26 +1,27 @@
-import './App.css';
-import {useEffect, useRef } from "react"
+//import './App.css';
+import {useEffect, useRef, useState } from "react"
+import BackDitails from './Items/BackDitails';
+import ModalStart from "./Modal/ModalStart";
+import ModalRestart from './Modal/ModalRestart'
 
 
-function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEndY, Platform, Platforms, enemy, Blade, Blades}) {
-  /*const light = props.light
-  const player = props.player
-  const laserValocityX = props.laserValocityX
-  const laserValocityY = props.laserValocityY
-  const laserEndX = props.laserEndX
-  const laserEndY = props.laserEndY
-  const Platform = props.Platform
-  const platform = props.platform
-  const platforms = props.platforms
-  const enemy = props.enemy*/
+function App({light, player, Platform, Platforms, enemy, Blade, Blades, startGame, setStartGame}) {
 
   const canvasRef = useRef(null);
   
   const gravity = 7
+  
+  const [notLooseYet, setNotLooseYet] = useState(true)
+  const [winner, setWinner] = useState(false)
+
+  let gameOver = false
 
   let onlyOneTime = true
   //let countUpPress = 0
-  
+  const [playetXPosition, setPlayetXPosition] = useState(0)
+  const [EyeX, setEyeX] = useState(0)
+  const [pupilColor, setPupilColor] = useState("black")
+  const [scleraColor, setScleraColor] = useState("black")
   
   ////
 
@@ -28,10 +29,11 @@ function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEnd
     const canvas = canvasRef.current
     const context = canvas.getContext('2d')
 
-    //canvas.width = window.innerWidth;
-    canvas.width = 1000
+    canvas.width = window.innerWidth;
+    //canvas.width = 800
     canvas.height = 600
 
+    console.log(startGame)
     //Our first draw
     const drawAllItem = () => {
       ////
@@ -42,23 +44,114 @@ function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEnd
       //shape
       context.fillStyle = player.color
       context.fillRect(player.x, player.y, player.width, player.height)
-
+      ///blades
+      //shape
+      Blades.forEach((blade) => {
+        Blade.drawitem(context, blade)
+      })
       ////light
       light.drawitem(context)
     
       ////platforms
-      /*context.fillStyle = platform.color
-      context.fillRect(platform.x , platform.y, platform.width, platform.height)*/
       Platforms.forEach((platform) => {
         Platform.drawitem(context, platform)
       })
       
-      ////enemy
-      //context.clearRect(player.x, player.y, player.width+10, player.height+10)
       enemy.drawitem(context)
-      Blades.forEach((blade) => {
-        Blade.drawitem(context, blade)
-      })
+
+      ////Blades
+      ////1
+      context.fillStyle = 'black'
+      context.beginPath()
+      context.moveTo(Blades[0].x + 10, 500)
+      context.lineTo(Blades[0].x, 600)
+      context.lineTo(Blades[0].x + 20, 600)
+      context.lineTo(Blades[0].x + 10, 500)
+      context.fill()
+      context.closePath()
+      ////2
+      context.fillStyle = 'black'
+      context.beginPath()
+      context.moveTo(Blades[1].x + 50, 400)
+      context.lineTo(Blades[1].x, 600)
+      context.lineTo(Blades[1].x + 100, 600)
+      context.lineTo(Blades[1].x + 50, 400)
+      context.fill()
+      context.closePath()
+      ////3
+      context.fillStyle = 'black'
+      context.beginPath()
+      context.moveTo(Blades[2].x + 25, 350)
+      context.lineTo(Blades[2].x, 400)
+      context.lineTo(Blades[2].x + 50, 400)
+      context.lineTo(Blades[2].x + 25, 350)
+      context.fill()
+      context.closePath()
+
+
+      ////
+      const drawMultiBlades = (Blade, valocityX, y1, y2) => {
+        context.fillStyle = '#222831'
+        context.beginPath()
+        context.moveTo(Blades[Blade].x + 15 + 30 * valocityX , y1)
+        context.lineTo(Blades[Blade].x + 30 * valocityX, y2)
+        context.lineTo(Blades[Blade].x + 30 * (valocityX + 1), y2)
+        context.lineTo(Blades[Blade].x + 15 + 30 * valocityX, y1)
+        context.fill()
+        context.closePath()
+      }
+      //4
+      /*drawMultiBlades(3, 0, 380, 400)
+      drawMultiBlades(3, 1, 380, 400)
+      drawMultiBlades(3, 2, 380, 400)
+      drawMultiBlades(3, 3, 380, 400)*/
+      for(let i = 0; i < 4; i++){
+        drawMultiBlades(3, i, 380, 400)
+      }
+
+      //5
+      /*drawMultiBlades(4, 0, 370, 350)
+      drawMultiBlades(4, 1, 370, 350)
+      drawMultiBlades(4, 2, 370, 350)
+      drawMultiBlades(4, 3, 370, 350)
+      drawMultiBlades(4, 4, 370, 350)
+      drawMultiBlades(4, 5, 370, 350)*/
+      for(let i = 0; i < 6; i++){
+        drawMultiBlades(4, i, 370, 350)
+      }
+
+      /////
+      const drawMultiBladesVertical = (Blade, valocityY) => {
+        context.fillStyle = '#222831'
+        context.beginPath()
+        context.moveTo(Blades[Blade].x, 465 + 30 * valocityY)
+        context.lineTo(Blades[Blade].x + 40, 450 + 30 * valocityY)
+        context.lineTo(Blades[Blade].x + 40, 480 + 30 * valocityY)
+        context.lineTo(Blades[Blade].x, 465 + 30 * valocityY)
+        context.fill()
+        context.closePath()
+      }
+      //6
+      /*drawMultiBladesVertical(5, 0)
+      drawMultiBladesVertical(5, 1)
+      drawMultiBladesVertical(5, 2)
+      drawMultiBladesVertical(5, 3)
+      drawMultiBladesVertical(5, 4)*/
+      for(let i = 0; i < 5; i++){
+        drawMultiBladesVertical(5, i)
+      }
+
+      /*
+      context.fillStyle = 'black'
+      context.beginPath()
+      context.moveTo(Blades[6].x + 100, Blades[6].y + 40)
+      context.lineTo(Blades[6].x, Blades[6].y)
+      context.lineTo(Blades[6].x + 200, Blades[6].y)
+      context.lineTo(Blades[6].x + 100, Blades[6].y + 40)
+      context.fill()
+      context.closePath()*/
+
+
       ////protagonist
       player.drawitem(context)
       
@@ -68,16 +161,14 @@ function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEnd
     
       player.x += player.valocityX
       player.y += player.valocityY
-      laserEndX += laserValocityX
-      laserEndY += laserValocityY
-      //player.eyeColor = "white"
       if(player.y + player.height + player.valocityY <= canvas.height){
         player.valocityY += gravity
-        laserValocityY += gravity
+        
       } else {
         player.valocityY = 0
-        laserValocityY = 0
+        
       }
+
       enemy.y += enemy.valocityY
       if(enemy.y  >= 450){
         enemy.valocityY = -5 
@@ -91,10 +182,6 @@ function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEnd
         ){
         player.eyeColor = "red"
       } 
-      /*if(laserValocityX === 300){
-        laserValocityX = 0
-      }*/
-      //console.log(player)
       
       drawAllItem()
     }
@@ -119,19 +206,15 @@ function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEnd
       window.requestAnimationFrame(animate)
       context.clearRect(0, 0, canvas.width, canvas.height)
       update()
-
+      console.log(startGame)
+      if(startGame && !gameOver){
       if(keys.right.pressed && player.x < 400){
         player.valocityX = 10
-        laserEndX +=8
-        laserValocityX = 10
       } else if(keys.left.pressed && player.x > 100) {
         player.valocityX = -10
-        laserEndX -=8
-        laserValocityX = -10
       } else {
         player.valocityX = 0
-        laserValocityX = 0
-
+       //if(notLooseYet){
         if(keys.right.pressed){
           Platforms.forEach((platform) => {
             platform.x -= 8
@@ -150,14 +233,15 @@ function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEnd
           })
           enemy.x += 8
         } 
+       //}
       } 
+    }
       ////platform 
       Platforms.forEach((platform) => {
         if(player.x + player.width >= platform.x && player.x <= platform.x + platform.width &&
           player.y + player.height <= platform.y && player.y + player.height + player.valocityY >= platform.y
          ){
          player.valocityY = 0
-         laserValocityY = 0
         }
       })
 
@@ -167,59 +251,73 @@ function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEnd
           player.y + player.height + player.valocityY >= blade.y && player.y <= blade.y + blade.height
           ){
           player.eyeColor = "red"
+          light.x = player.x + 100
+          light.y = player.y + 50
+          console.log("You lose")
+           
+          //player.valocityX = 0
+          //notLooseYet = false
+          setNotLooseYet(false)
+          gameOver = true
+          //setStartGame(false)
+          //window.location.reload();
+          Platforms.forEach((platform) => {
+            platform.x -= 0
+            onlyOneTime = true
+          })
           setTimeout(() => {
             player.eyeColor = "white"
           }, 1000)
         }
       })
-
+      if(startGame && notLooseYet){
       if(keys.up.pressed && player.y > 100 && player.valocityY === 0){
         player.valocityY = -60
-        laserValocityY = -60
       } 
-      
+    }
       if(onlyOneTime && player.x >= Platforms[1].x + Platforms[1].width/4 && player.x <= Platforms[1].x + Platforms[1].width/2){
-        console.log("mooove")
-        console.log(Platforms[1].x)
         Platforms[1].x -= 150
         setTimeout(() => {
           Platforms[1].x += 150
         }, 1500)
+      }
+
+      if(onlyOneTime && player.x >= Platforms[4].x - 100 && player.x <= Blades[5].x - Platforms[5].width){
+        console.log("mooove")
         console.log(Platforms[1].x)
+        Blades[5].x -= 500
+        console.log(Blades[5].x)
+      }
+      if(onlyOneTime && player.x >= Blades[6].x && player.x <= Blades[6].x + Blades[6].width){
+       console.log("mooove")
+       console.log(Platforms[1].x)
+       Blades[6].y = 410
+       console.log(Blades[5].x)
       }
       onlyOneTime = false
+
+      if(Platforms[6].x <= player.x){
+        setWinner(true)
+        gameOver = true
+        console.log("you win")
+      }
+
+      setPlayetXPosition(player.x)
+      setEyeX(Platforms[0].x)
     }
 
     animate()
 
     window.addEventListener('mousemove', function(e) {
-      //if (!running) {
-        //animate()
-        //drawAllItem()
-      /*if(e.clientX > canvas.width/2 && e.clientY < 100){
-        light.lineX = light.width
-        light.lineY = light.height/2
-      }*/ 
+      if(!gameOver){
       if(e.clientY > 50){
         if(e.clientX > 200){
           light.x = e.clientX;
           light.y = e.clientY;
-          //light.lineX = 0
-          //light.lineY = 0
-          /*if(e.clientY > 400){
-            light.width = 130
-            light.height = 130
-          } else {
-            light.width = 100
-            light.height = 100
-
-          }*/
         }
-        
           light.y = e.clientY;
       }
-      
-      
+      }
       //}
       if(light.x <= enemy.x + enemy.width && light.x >= enemy.x &&
          light.y <= enemy.y + enemy.height && light.y >= enemy.y
@@ -229,40 +327,25 @@ function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEnd
       } else {
         enemy.color = "#222831"
       }
+
+      if(light.x <= Platforms[0].x + Platforms[0].width && light.x >= Platforms[0].x + 50 &&
+        light.y <= 385 && light.y >= 360
+        ){
+          setPupilColor("white")
+          setScleraColor("white")
+          console.log("eye")
+      } else {
+        setPupilColor("black")
+          setScleraColor("black")
+      }
+      
     });
 
     window.addEventListener('click', function(e) {
-      console.log("-----------mouse click")
+      //console.log("-----------mouse click")
       if(e.clientX >= enemy.x && e.clientX <= enemy.x + enemy.width &&
          e.clientY >= enemy.y && e.clientY <= enemy.y + enemy.height
         ){
-        console.log("-----------mouse click on enemy")
-
-        //setTimeout(() => {
-        /*  enemy.color = "yellow"
-          player.eyeColor = "red"
-          //laserValocityX = 1
-          
-        //}, 200)
-        setTimeout(() => {
-          laserEndX = e.clientX
-          laserEndY = e.clientY
-          //laserEnd.x = e.clientX
-          //laserEnd.y = e.clientY
-          //laserValocityX = e.clientX - player.x + player.width/2 +2
-          laserValocityX = e.clientX - (player.x + player.width/2 +2)
-          laserValocityY = -((player.y + 38) - e.clientY)
-        }, 500)
-        setTimeout(() => {
-          //enemy.y = -20
-          player.eyeColor = "white"
-          laserValocityX = - (e.clientX - (player.x + player.width/2 +2))
-          laserValocityY = (player.y + 38) - e.clientY
-          laserEndX = player.x + player.width/2
-          laserEndY = player.y + 38
-          //laserEnd.x = player.x + player.width/2 +2
-          //laserEnd.y = player.y + 38
-        }, 2000)*/
 
         let promise = new Promise((resolve, reject) => {
           enemy.color = "yellow"
@@ -277,10 +360,7 @@ function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEnd
             console.log('Success, You are a GEEK');
             setTimeout(() => {
               player.eyeColor = "white"
-              laserValocityX = - (e.clientX - (player.x + player.width/2 +2))
-              laserValocityY = (player.y + 38) - e.clientY
-              laserEndX = player.x + player.width/2
-              laserEndY = player.y + 38
+              
             }, 2000)
         }).
         catch(function () {
@@ -292,27 +372,17 @@ function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEnd
 
     window.addEventListener('keydown', ({key}) => {
       
-      //console.log("----------------------countpress", countUpPress)
-      console.log("press---------")
-      //console.log("key", key)
       switch (key){
         case "a":
-          console.log("left")
-          //player.valocityX = -1
           keys.left.pressed = true
           break
         case "s":
-          console.log("down")
           keys.down.pressed = true
           break
         case "d":
-          console.log("right")
-          //player.valocityX = 1
           keys.right.pressed = true
           break
         case "w":
-          console.log("up")
-          //player.valocityY -=60
           keys.up.pressed = true
           //countUpPress++
           break
@@ -320,37 +390,32 @@ function App({light, player, laserValocityX, laserValocityY, laserEndX, laserEnd
     });
 
     window.addEventListener('keyup', ({key}) => {
-      console.log("press---------")
-      //console.log("key", key)
+
       switch (key){
         case "a":
-          console.log("left")
-          //player.valocityX = 0
           keys.left.pressed = false
           break
         case "s":
-          console.log("down")
-          //player.valocityY = 0
           keys.down.pressed = false
           break
         case "d":
-          console.log("right")
-          //player.valocityX = 0
           keys.right.pressed = false
           break
         case "w":
-          console.log("up")
-          //player.valocityY = 0
           //countUpPress = 0
           keys.up.pressed = false
           break
       }
     });
 
-  }, [])
-
+  }, [startGame])
+  
   return (
-    <canvas ref={canvasRef} />
+    <div>
+      <ModalRestart notLooseYet={notLooseYet} setNotLooseYet={setNotLooseYet} winner={winner} />
+      <BackDitails playetXPosition={playetXPosition} EyeX={EyeX} scleraColor={scleraColor} pupilColor={pupilColor}/>
+      <canvas ref={canvasRef} id="canvas"/>
+    </div>
   );
 }
 

@@ -1,0 +1,126 @@
+.moon {
+  position: absolute;
+  z-index: 0;
+  top: 40px; 
+  left: 40px; 
+  background-color: gray; 
+  width: 200px;
+  height: 200px; 
+  border-radius: 50%; 
+  box-shadow: 0 0 50px 0 gray;
+}
+#moon-first {
+  position: absolute;
+  z-index: 0;
+  left: 80px;
+  top: 100px; 
+  background-color: white; 
+  width: 10px;
+  height: 10px; 
+  border-radius: 50%; 
+  opacity: 0.8;
+  box-shadow: 0 0 5px 0 white;
+}
+#moon-second {
+  position: absolute;
+  left: 80px;
+  top: 42px; 
+  background-color: white; 
+  width: 20px;
+  height: 20px; 
+  border-radius: 50%; 
+  opacity: 0.8;
+  box-shadow: 0 0 5px 0 white;
+}
+#moon-third {
+  position: absolute;
+  left: 25px;
+  top: 42px; 
+  background-color: white; 
+  width: 50px;
+  height: 50px; 
+  border-radius: 50%; 
+  opacity: 0.8;
+  box-shadow: 0 0 5px 0 white;
+}
+
+.lighthouse {
+  position: absolute;
+  z-index: 2;
+  left: 25px;
+  top: 420px; 
+  background-color: black; 
+  width: 50px;
+  height: 180px; 
+}
+
+.lighthouse div {
+  position: absolute;
+  top: -80px; 
+  background-color: #F9DC5C; 
+  width: 30px;
+  height: 60px; 
+  border: 10px black solid;
+  box-shadow: 0 0 70px 0 #F9DC5C;
+}
+
+.eye-container {
+  position: absolute; 
+  z-index: 1;
+  top: 360px;
+}
+.eye-screla {
+  position: absolute;
+  z-index: 1;
+  border-radius: 50%; 
+  width: 25px; 
+  height: 25px;
+}
+.eye-pupil {
+  position: absolute; 
+  z-index: 1; 
+  left: 10px; 
+  top: 2px;
+  background-color: black; 
+  border-radius: 50%; 
+  width: 10px; 
+  height: 10px;
+  transform-origin: 50% 10px;
+  animation: swing 3000ms infinite ease-in-out;
+}
+.eye-pupil div{
+  position: absolute; 
+  z-index: 2; 
+  left: 3px; 
+  top: 2px; 
+  border-radius: 50%; 
+  width: 2px; 
+  height: 2px;
+}
+
+@keyframes swing{
+    0%{    
+
+    transform:rotate(250deg);
+    }
+    20%{
+      
+    transform:rotate(200deg);
+    }
+    35%{
+      
+    transform:rotate(250deg);
+    }
+    50%{
+      
+    transform:rotate(150deg);
+    }
+    80%{
+      
+    transform:rotate(50deg);
+    }
+    100%{
+      
+    transform:rotate(250deg);
+    }
+  }

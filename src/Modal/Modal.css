@@ -1,0 +1,76 @@
+.popup {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    right: 0;
+    top: 100px;
+    margin-left: auto;
+    width: 500px;
+    height: 350px;
+    margin-right: auto;
+    text-align: center;
+    background-color: wheat;
+    border-radius: 35px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.popup-hidden {
+    position: absolute;
+    z-index: 3;
+    opacity: 0;
+    visibility: hidden;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: 130px;
+    justify-content: space-between;
+    margin-left: auto;
+    margin-right: auto;
+}
+.container-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.container-button {
+    display: flex;
+    flex-direction: column;
+    height: 63px;
+    justify-content: space-between;
+}
+.button {
+    background-color: black;
+    color: wheat;
+    border: 2px solid gray;
+    width: 25px;
+    margin-left: auto;
+    margin-right: auto;
+}
+button {
+    background-color: black;
+    color: wheat;
+    border: none;
+    width: 90px;
+    height: 30px;
+    border-radius: 5px;
+}
+.popup-restart {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    right: 0;
+    top: 200px;
+    margin-left: auto;
+    width: 500px;
+    height: 100px;
+    margin-right: auto;
+    text-align: center;
+    background-color: wheat;
+}
+.popup-restart-hidden {
+    position: absolute;
+    z-index: 3;
+    opacity: 0;
+    visibility: hidden;
+}

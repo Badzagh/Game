@@ -1,8 +1,8 @@
-import App from './App';
+import App from '../App';
 
-function Items (){
+function Items ({startGame, setStartGame}){
   ////light
-
+  //const startGameBool = startGame
   const light = {
     x: 500,
     y: 100,
@@ -43,22 +43,11 @@ function Items (){
     y: 500,
     width: 40,
     height: 100,
-    color: 'black',
+    color: '#222831',
     eyeColor: "white",
     valocityX: 0,
     valocityY: 1
   }
-
-  let laserValocityX = 0
-  let laserValocityY = 0
-  //let laserEndX = player.x + player.width/2 +2
-  //let laserEndY = player.y + 38
-  let laserEndX = player.x + player.width/2 +2
-  let laserEndY = player.y + 38
-  /*const laserEnd = {
-    x: player.x + player.width/2 +2,
-    y: player.y + 38
-  }*/
 
   const playerAction = {
     drawitem(context){
@@ -87,22 +76,6 @@ function Items (){
       context.lineTo(player.x + 20, player.y + 45)
       context.fill()
       context.closePath()
-
-      //laser
-
-      /*context.fillStyle = player.eyeColor
-      context.beginPath();
-      context.arc(player.x + player.width/2 + laserValocityX, player.y + 38, 3, 0, 2 * Math.PI);
-      context.fill()*/
-      ////////////////context.beginPath();
-      /*context.moveTo(player.x + player.width/2, player.y + 38)
-      context.lineTo(laserEndX, laserEndY);*/
-      ////////////////context.moveTo(laserEndX, laserEndY)
-      ////////////////context.lineTo(player.x + player.width/2, player.y + 38);
-      //context.lineTo(player.x + player.width/2 + laserValocityX, player.y + 38 + laserValocityY);
-      ////////////////context.strokeStyle = 'red';
-      ////////////////context.stroke();
-
 
       //left leg
       context.fillStyle = 'gray'
@@ -153,9 +126,6 @@ function Items (){
 
   Platform.drawitem = PlatformAction.drawitem
 
-  //const platform = new Platform(400, 400)
-  //const platforms = [new Platform(400, 400), new Platform(1000, 400)]
-  const platform = Platform(400, 400)
   const Platforms = [Platform(600, 350), Platform(1200, 400), Platform(1580, 300), Platform(1840, 400), Platform(2200, 300), Platform(2700, 450),Platform(3100, 400)]
 
 
@@ -201,22 +171,20 @@ function Items (){
 
   Blade.drawitem = bladeAction.drawitem
 
-  const Blades = [Blade(1300, 500, 20, 100, "black"), Blade(1600, 400, 100, 200, "black"), Blade(1840, 350, 50, 50, "black"), Blade(1890, 380, 120, 20, "blue"), Blade(2200, 350, 200, 20, "blue"), Blade(2660, 450, 40, 150, "blue"), Blade(2700, 150, 200, 40, "blue")]
+  const Blades = [Blade(1300, 500, 20, 100, "#222831"), Blade(1600, 400, 100, 200, "#222831"), Blade(1840, 350, 50, 50, "#222831"), Blade(1890, 380, 120, 20, "#222831"), Blade(2200, 350, 200, 20, "#222831"), Blade(2660, 450, 40, 150, "#222831"), Blade(2700, 150, 200, 40, "black")]
 
   return (
     <div>
       <App 
         light={light} 
         player={player} 
-        laserValocityX={laserValocityX} 
-        laserValocityY={laserValocityY}  
-        laserEndX={laserEndX}
-        laserEndY={laserEndY}
         Platform={Platform}
         Platforms={Platforms}
         enemy={enemy}
         Blade={Blade}
         Blades={Blades}
+        startGame={startGame}
+        setStartGame={setStartGame}
       />
     </div>
   );
