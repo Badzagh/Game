@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react"
-import App from "../App"
+import { useState } from "react"
 import "./Modal.css"
 import Items from '../Items/Items'
 
@@ -10,13 +9,9 @@ const Modal = () => {
     const [activeClass, setActiveClass] = useState("popup")
 
     const HandleClick = () => {
-        
         setStartGame(true)
         setActive(false)
         setActiveClass("popup-hidden")
-            
-        
-        console.log("start")
     };
     
 
@@ -24,21 +19,21 @@ const Modal = () => {
         <div>
         <div className={activeClass}>
             <div>
-                <h3>Game Rules</h3>
+                <h3>Robo</h3>
             </div>
             <div className="container">
-                <div className="container-button">
+                <div className="container-directions-button">
                     <span>up</span>
-                    <span className="button">w</span>
+                    <span className="directions-button">w</span>
                 </div>
                 <div className="container-wrap">
-                    <div className="container-button">
+                    <div className="container-directions-button">
                     <span>left</span>
-                    <span className="button">A</span>
+                    <span className="directions-button">A</span>
                     </div>
-                    <div className="container-button">
+                    <div className="container-directions-button">
                         <span>right</span>
-                        <span className="button">D</span>
+                        <span className="directions-button">D</span>
                     </div>
                 </div>
             </div>

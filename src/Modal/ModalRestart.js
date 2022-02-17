@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import "./Modal.css"
 
-const ModalRestart = ({notLooseYet, setNotLooseYet, winner}) => {
+const ModalRestart = ({notLooseYet, setNotLooseYet, winner, CoinsCount}) => {
+
     const [activeRestartModal, setActiveRestartModal] = useState("popup-restart-hidden")
     const [messige, setMessige] = useState("Congratulations, You win")
-    console.log(notLooseYet)
+    
     useEffect(() => {
         if(!notLooseYet){
             setActiveRestartModal("popup-restart")
@@ -15,13 +16,6 @@ const ModalRestart = ({notLooseYet, setNotLooseYet, winner}) => {
             setMessige("Congratulations, You Win")
         }
     },[notLooseYet, winner])
-
-    /*useEffect(() => {
-        if(winner) {
-            setActiveRestartModal("popup-restart")
-            setMessige("Congratulations, You Win")
-        }
-    },[winner])*/
     
     const HandleRestart = () => {
         setActiveRestartModal("popup-restart-hidden")
@@ -33,12 +27,12 @@ const ModalRestart = ({notLooseYet, setNotLooseYet, winner}) => {
         <div className={activeRestartModal}>
             <div>
                 <h3>{messige}</h3>
+                <p>Coins: {CoinsCount}</p>
             </div>
             <div>
                 <button onClick={HandleRestart}>Restart</button>
             </div>
         </div>
-        
     );
 }
 

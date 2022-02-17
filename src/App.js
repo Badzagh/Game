@@ -1,27 +1,25 @@
-//import './App.css';
-import {useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import BackDitails from './Items/BackDitails';
-import ModalStart from "./Modal/ModalStart";
 import ModalRestart from './Modal/ModalRestart'
 
 
-function App({light, player, Platform, Platforms, enemy, Blade, Blades, startGame, setStartGame}) {
+function App({light, player, Platform, Platforms, enemy, BladeUpDirection, BladesUpDirection, BladeDownDirection, BladesDownDirection, BladeLeftDirection, BladesLeftDirection, startGame, setStartGame, Coin, Coins}) {
 
   const canvasRef = useRef(null);
-  
+
+  let coinsNum = 0
   const gravity = 7
+  let gameOver = false
+  let Move = true
   
   const [notLooseYet, setNotLooseYet] = useState(true)
   const [winner, setWinner] = useState(false)
-
-  let gameOver = false
-
-  let onlyOneTime = true
-  //let countUpPress = 0
-  const [playetXPosition, setPlayetXPosition] = useState(0)
+  const [playerXPosition, setPlayerXPosition] = useState(0)
+  const [playerYPosition, setPlayerYPosition] = useState(0)
   const [EyeX, setEyeX] = useState(0)
   const [pupilColor, setPupilColor] = useState("black")
   const [scleraColor, setScleraColor] = useState("black")
+  const [CoinsCount, setCoinsCount] = useState(0)
   
   ////
 
@@ -30,11 +28,8 @@ function App({light, player, Platform, Platforms, enemy, Blade, Blades, startGam
     const context = canvas.getContext('2d')
 
     canvas.width = window.innerWidth;
-    //canvas.width = 800
     canvas.height = 600
 
-    console.log(startGame)
-    //Our first draw
     const drawAllItem = () => {
       ////
       context.fillStyle = '#222831'
@@ -44,114 +39,37 @@ function App({light, player, Platform, Platforms, enemy, Blade, Blades, startGam
       //shape
       context.fillStyle = player.color
       context.fillRect(player.x, player.y, player.width, player.height)
-      ///blades
+
+      ///coins
       //shape
-      Blades.forEach((blade) => {
-        Blade.drawitem(context, blade)
+      Coins.forEach((coin) => {
+        Coin.drawitem(context, coin)
       })
+
       ////light
       light.drawitem(context)
     
+      ///blades
+      BladesUpDirection.forEach((blade) => {
+        BladeUpDirection.drawitem(context, blade)
+      })
+
+      BladesDownDirection.forEach((blade) => {
+        BladeDownDirection.drawitem(context, blade)
+      })
+
+      BladesLeftDirection.forEach((blade) => {
+        BladeLeftDirection.drawitem(context, blade)
+      })
+
       ////platforms
       Platforms.forEach((platform) => {
         Platform.drawitem(context, platform)
       })
       
+      ////enemy
       enemy.drawitem(context)
-
-      ////Blades
-      ////1
-      context.fillStyle = 'black'
-      context.beginPath()
-      context.moveTo(Blades[0].x + 10, 500)
-      context.lineTo(Blades[0].x, 600)
-      context.lineTo(Blades[0].x + 20, 600)
-      context.lineTo(Blades[0].x + 10, 500)
-      context.fill()
-      context.closePath()
-      ////2
-      context.fillStyle = 'black'
-      context.beginPath()
-      context.moveTo(Blades[1].x + 50, 400)
-      context.lineTo(Blades[1].x, 600)
-      context.lineTo(Blades[1].x + 100, 600)
-      context.lineTo(Blades[1].x + 50, 400)
-      context.fill()
-      context.closePath()
-      ////3
-      context.fillStyle = 'black'
-      context.beginPath()
-      context.moveTo(Blades[2].x + 25, 350)
-      context.lineTo(Blades[2].x, 400)
-      context.lineTo(Blades[2].x + 50, 400)
-      context.lineTo(Blades[2].x + 25, 350)
-      context.fill()
-      context.closePath()
-
-
-      ////
-      const drawMultiBlades = (Blade, valocityX, y1, y2) => {
-        context.fillStyle = '#222831'
-        context.beginPath()
-        context.moveTo(Blades[Blade].x + 15 + 30 * valocityX , y1)
-        context.lineTo(Blades[Blade].x + 30 * valocityX, y2)
-        context.lineTo(Blades[Blade].x + 30 * (valocityX + 1), y2)
-        context.lineTo(Blades[Blade].x + 15 + 30 * valocityX, y1)
-        context.fill()
-        context.closePath()
-      }
-      //4
-      /*drawMultiBlades(3, 0, 380, 400)
-      drawMultiBlades(3, 1, 380, 400)
-      drawMultiBlades(3, 2, 380, 400)
-      drawMultiBlades(3, 3, 380, 400)*/
-      for(let i = 0; i < 4; i++){
-        drawMultiBlades(3, i, 380, 400)
-      }
-
-      //5
-      /*drawMultiBlades(4, 0, 370, 350)
-      drawMultiBlades(4, 1, 370, 350)
-      drawMultiBlades(4, 2, 370, 350)
-      drawMultiBlades(4, 3, 370, 350)
-      drawMultiBlades(4, 4, 370, 350)
-      drawMultiBlades(4, 5, 370, 350)*/
-      for(let i = 0; i < 6; i++){
-        drawMultiBlades(4, i, 370, 350)
-      }
-
-      /////
-      const drawMultiBladesVertical = (Blade, valocityY) => {
-        context.fillStyle = '#222831'
-        context.beginPath()
-        context.moveTo(Blades[Blade].x, 465 + 30 * valocityY)
-        context.lineTo(Blades[Blade].x + 40, 450 + 30 * valocityY)
-        context.lineTo(Blades[Blade].x + 40, 480 + 30 * valocityY)
-        context.lineTo(Blades[Blade].x, 465 + 30 * valocityY)
-        context.fill()
-        context.closePath()
-      }
-      //6
-      /*drawMultiBladesVertical(5, 0)
-      drawMultiBladesVertical(5, 1)
-      drawMultiBladesVertical(5, 2)
-      drawMultiBladesVertical(5, 3)
-      drawMultiBladesVertical(5, 4)*/
-      for(let i = 0; i < 5; i++){
-        drawMultiBladesVertical(5, i)
-      }
-
-      /*
-      context.fillStyle = 'black'
-      context.beginPath()
-      context.moveTo(Blades[6].x + 100, Blades[6].y + 40)
-      context.lineTo(Blades[6].x, Blades[6].y)
-      context.lineTo(Blades[6].x + 200, Blades[6].y)
-      context.lineTo(Blades[6].x + 100, Blades[6].y + 40)
-      context.fill()
-      context.closePath()*/
-
-
+      
       ////protagonist
       player.drawitem(context)
       
@@ -166,7 +84,6 @@ function App({light, player, Platform, Platforms, enemy, Blade, Blades, startGam
         
       } else {
         player.valocityY = 0
-        
       }
 
       enemy.y += enemy.valocityY
@@ -181,6 +98,10 @@ function App({light, player, Platform, Platforms, enemy, Blade, Blades, startGam
          player.y + player.height + player.valocityY >= enemy.y && player.y <= enemy.y + enemy.height
         ){
         player.eyeColor = "red"
+        light.x = enemy.x + 100
+        light.y = enemy.y + 50
+        setNotLooseYet(false)
+        gameOver = true
       } 
       
       drawAllItem()
@@ -206,37 +127,58 @@ function App({light, player, Platform, Platforms, enemy, Blade, Blades, startGam
       window.requestAnimationFrame(animate)
       context.clearRect(0, 0, canvas.width, canvas.height)
       update()
-      console.log(startGame)
+      
       if(startGame && !gameOver){
-      if(keys.right.pressed && player.x < 400){
-        player.valocityX = 10
-      } else if(keys.left.pressed && player.x > 100) {
-        player.valocityX = -10
-      } else {
-        player.valocityX = 0
-       //if(notLooseYet){
-        if(keys.right.pressed){
-          Platforms.forEach((platform) => {
-            platform.x -= 8
-            onlyOneTime = true
-          })
-          Blades.forEach((blade) => {
-            blade.x -= 8
-          })
-          enemy.x -= 8
-        } else if(keys.left.pressed) {
-          Platforms.forEach((platform) => {
-            platform.x += 8
-          })
-          Blades.forEach((blade) => {
-            blade.x += 8
-          })
-          enemy.x += 8
+        if(keys.right.pressed && player.x < 400){
+          player.valocityX = 10
+        } else if(keys.left.pressed && player.x > 100) {
+          player.valocityX = -10
+        } else {
+          player.valocityX = 0
+          
+          ////background schroll
+          if(notLooseYet){
+            if(keys.right.pressed){
+              Platforms.forEach((platform) => {
+                platform.x -= 8
+                Move = true
+              })
+              BladesUpDirection.forEach((blade) => {
+                blade.x -= 8
+              })
+              BladesDownDirection.forEach((blade) => {
+                blade.x -= 8
+              })
+              BladesLeftDirection.forEach((blade) => {
+                blade.x -= 8
+              })
+              Coins.forEach((coin) => {
+                coin.x -= 8
+              })
+              enemy.x -= 8
+            } else if(keys.left.pressed) {
+              Platforms.forEach((platform) => {
+                platform.x += 8
+              })
+              BladesUpDirection.forEach((blade) => {
+                blade.x += 8
+              })
+              BladesDownDirection.forEach((blade) => {
+                blade.x += 8
+              })
+              BladesLeftDirection.forEach((blade) => {
+                blade.x += 8
+              })
+              Coins.forEach((coin) => {
+                coin.x += 8
+              })
+              enemy.x += 8
+            } 
+          }
         } 
-       //}
-      } 
-    }
-      ////platform 
+      }
+
+      ////jump on platform 
       Platforms.forEach((platform) => {
         if(player.x + player.width >= platform.x && player.x <= platform.x + platform.width &&
           player.y + player.height <= platform.y && player.y + player.height + player.valocityY >= platform.y
@@ -245,128 +187,110 @@ function App({light, player, Platform, Platforms, enemy, Blade, Blades, startGam
         }
       })
 
-      ////blades
-      Blades.forEach((blade) => {
-        if(player.x + player.width + player.valocityX >= blade.x && player.x <= blade.x + blade.width &&
-          player.y + player.height + player.valocityY >= blade.y && player.y <= blade.y + blade.height
+      ////killer blades
+      const KillerBlades = (Blades) => {
+        Blades.forEach((blade) => {
+          if(player.x + player.width + player.valocityX >= blade.x && player.x <= blade.x + blade.width &&
+            player.y + player.height + player.valocityY >= blade.y && player.y <= blade.y + blade.height
+            ){
+            player.eyeColor = "red"
+            light.x = player.x + 100
+            light.y = player.y + 50
+            setNotLooseYet(false)
+            gameOver = true
+            Platforms.forEach((platform) => {
+              platform.x -= 0
+              Move = true
+            })
+            setTimeout(() => {
+              player.eyeColor = "white"
+            }, 1000)
+          }
+        })
+      }
+
+      KillerBlades(BladesUpDirection)
+      KillerBlades(BladesDownDirection)
+      KillerBlades(BladesLeftDirection)
+
+      if(startGame && notLooseYet){
+        if(keys.up.pressed && player.y > 100 && player.valocityY === 0){
+          player.valocityY = -60
+        } 
+      }
+
+      ////Coins
+      Coins.forEach((coin, index) => {
+        if(player.x + player.width + player.valocityX >= coin.x && player.x <= coin.x + coin.width &&
+          player.y + player.height + player.valocityY >= coin.y && player.y <= coin.y + coin.height
           ){
-          player.eyeColor = "red"
-          light.x = player.x + 100
-          light.y = player.y + 50
-          console.log("You lose")
-           
-          //player.valocityX = 0
-          //notLooseYet = false
-          setNotLooseYet(false)
-          gameOver = true
-          //setStartGame(false)
-          //window.location.reload();
-          Platforms.forEach((platform) => {
-            platform.x -= 0
-            onlyOneTime = true
-          })
-          setTimeout(() => {
-            player.eyeColor = "white"
-          }, 1000)
+            Coins.splice(index, 1)
+            coinsNum++  
         }
       })
-      if(startGame && notLooseYet){
-      if(keys.up.pressed && player.y > 100 && player.valocityY === 0){
-        player.valocityY = -60
-      } 
-    }
-      if(onlyOneTime && player.x >= Platforms[1].x + Platforms[1].width/4 && player.x <= Platforms[1].x + Platforms[1].width/2){
+
+
+      /////movement blades and platforms
+      if(Move && player.x >= Platforms[1].x + Platforms[1].width/4 && player.x <= Platforms[1].x + Platforms[1].width/2){
         Platforms[1].x -= 150
         setTimeout(() => {
           Platforms[1].x += 150
         }, 1500)
       }
 
-      if(onlyOneTime && player.x >= Platforms[4].x - 100 && player.x <= Blades[5].x - Platforms[5].width){
-        console.log("mooove")
-        console.log(Platforms[1].x)
-        Blades[5].x -= 500
-        console.log(Blades[5].x)
+      if(Move && player.x >= Platforms[4].x - 100 && player.x <= BladesLeftDirection[0].x - Platforms[1].width){
+        for(let i = 0; i < 6; i++){
+          BladesLeftDirection[i].x -= 500
+        }
       }
-      if(onlyOneTime && player.x >= Blades[6].x && player.x <= Blades[6].x + Blades[6].width){
-       console.log("mooove")
-       console.log(Platforms[1].x)
-       Blades[6].y = 410
-       console.log(Blades[5].x)
+      if(Move && player.x >= BladesDownDirection[5].x && player.x <= BladesDownDirection[5].x + BladesDownDirection[5].width){
+        for(let i = 5; i < 12; i++){
+          BladesDownDirection[i].y = 450
+        }
       }
-      onlyOneTime = false
+      Move = false
 
       if(Platforms[6].x <= player.x){
         setWinner(true)
         gameOver = true
-        console.log("you win")
       }
 
-      setPlayetXPosition(player.x)
+      setPlayerXPosition(player.x)
+      setPlayerYPosition(player.y)
       setEyeX(Platforms[0].x)
+      setCoinsCount(coinsNum)
     }
-
+    
     animate()
 
     window.addEventListener('mousemove', function(e) {
+
       if(!gameOver){
-      if(e.clientY > 50){
-        if(e.clientX > 200){
-          light.x = e.clientX;
-          light.y = e.clientY;
+        if(e.clientY > 50){
+          if(e.clientX > 200){
+            light.x = e.clientX;
+            light.y = e.clientY;
+          }
+            light.y = e.clientY;
         }
-          light.y = e.clientY;
       }
-      }
-      //}
+
       if(light.x <= enemy.x + enemy.width && light.x >= enemy.x &&
          light.y <= enemy.y + enemy.height && light.y >= enemy.y
          ){
         enemy.color = "black"
-        console.log("touch")
       } else {
         enemy.color = "#222831"
       }
 
-      if(light.x <= Platforms[0].x + Platforms[0].width && light.x >= Platforms[0].x + 50 &&
+      if(light.x <= Platforms[0].x + Platforms[0].width && light.x >= Platforms[0].x + 10 &&
         light.y <= 385 && light.y >= 360
         ){
-          setPupilColor("white")
-          setScleraColor("white")
-          console.log("eye")
+        setPupilColor("white")
+        setScleraColor("white")
       } else {
         setPupilColor("black")
-          setScleraColor("black")
-      }
-      
-    });
-
-    window.addEventListener('click', function(e) {
-      //console.log("-----------mouse click")
-      if(e.clientX >= enemy.x && e.clientX <= enemy.x + enemy.width &&
-         e.clientY >= enemy.y && e.clientY <= enemy.y + enemy.height
-        ){
-
-        let promise = new Promise((resolve, reject) => {
-          enemy.color = "yellow"
-          player.eyeColor = "red"
-          if(enemy.color === "yellow" && player.eyeColor === "red"){
-            resolve();
-          } else reject();
-        });
-
-        promise.
-        then(function () {
-            console.log('Success, You are a GEEK');
-            setTimeout(() => {
-              player.eyeColor = "white"
-              
-            }, 2000)
-        }).
-        catch(function () {
-            console.log('Some error has occurred');
-        });
-
+        setScleraColor("black")
       }
     });
 
@@ -384,7 +308,6 @@ function App({light, player, Platform, Platforms, enemy, Blade, Blades, startGam
           break
         case "w":
           keys.up.pressed = true
-          //countUpPress++
           break
       }
     });
@@ -402,7 +325,6 @@ function App({light, player, Platform, Platforms, enemy, Blade, Blades, startGam
           keys.right.pressed = false
           break
         case "w":
-          //countUpPress = 0
           keys.up.pressed = false
           break
       }
@@ -412,8 +334,8 @@ function App({light, player, Platform, Platforms, enemy, Blade, Blades, startGam
   
   return (
     <div>
-      <ModalRestart notLooseYet={notLooseYet} setNotLooseYet={setNotLooseYet} winner={winner} />
-      <BackDitails playetXPosition={playetXPosition} EyeX={EyeX} scleraColor={scleraColor} pupilColor={pupilColor}/>
+      <ModalRestart notLooseYet={notLooseYet} setNotLooseYet={setNotLooseYet} winner={winner} CoinsCount={CoinsCount} />
+      <BackDitails playerXPosition={playerXPosition} playerYPosition={playerYPosition} EyeX={EyeX} scleraColor={scleraColor} pupilColor={pupilColor} Coins={Coins}/>
       <canvas ref={canvasRef} id="canvas"/>
     </div>
   );

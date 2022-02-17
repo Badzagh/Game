@@ -1,8 +1,8 @@
 import App from '../App';
 
 function Items ({startGame, setStartGame}){
+
   ////light
-  //const startGameBool = startGame
   const light = {
     x: 500,
     y: 100,
@@ -14,16 +14,16 @@ function Items ({startGame, setStartGame}){
 
   const lightAction = {
     drawitem(context){
+
       ////circle light
       context.fillStyle = '#F9DC5C'
-      //context.fillRect(light.x,  light.y, light.width, light.height)
       context.beginPath();
       context.arc(light.x, light.y, light.width, 0, 2 * Math.PI);
       context.fill()
+
       ////triangle light
       context.fillStyle = '#F9DC5C'
       context.beginPath()
-      //context.moveTo(light.x, light.y - light.height/2)
       context.moveTo(40,400)
       context.lineTo(light.x + light.lineX, light.y + light.height/2 - light.lineY)
       context.lineTo(light.x - light.lineX, light.y - light.height/2 + light.lineY)
@@ -51,6 +51,7 @@ function Items ({startGame, setStartGame}){
 
   const playerAction = {
     drawitem(context){
+      
       //left ear
       context.fillStyle = "gray"
       context.fillRect(player.x, player.y, 2, 30)
@@ -92,7 +93,6 @@ function Items ({startGame, setStartGame}){
       context.beginPath()
       context.moveTo(player.x + 30, player.y + 100)
       context.lineTo(player.x + 15, player.y + 50)
-      //context.bezierCurveTo(player.x + 120, player.y, player.x + 120, player.y + 200, player.x + 60, player.y + 200);
       context.lineTo(player.x + 30, player.y + 50)
       context.lineTo(player.x + 30, player.y + 100)
       context.fill()
@@ -111,9 +111,7 @@ function Items ({startGame, setStartGame}){
       y: positionY,
       width: 200,
       height: 50,
-      color: "black",
-      valocityX: 0,
-      valocityY: 0
+      color: "black"
     }
   }
 
@@ -126,7 +124,7 @@ function Items ({startGame, setStartGame}){
 
   Platform.drawitem = PlatformAction.drawitem
 
-  const Platforms = [Platform(600, 350), Platform(1200, 400), Platform(1580, 300), Platform(1840, 400), Platform(2200, 300), Platform(2700, 450),Platform(3100, 400)]
+  const Platforms = [Platform(600, 350), Platform(1200, 400), Platform(1570, 300), Platform(1840, 400), Platform(2200, 300), Platform(2700, 450),Platform(3100, 400)]
 
 
   ////enemy
@@ -150,28 +148,114 @@ function Items ({startGame, setStartGame}){
 
   enemy.drawitem = enemyAction.drawitem
 
-  const Blade = (positionX, positionY, widthB, heightB, colorB) =>  {
+  ////blades
+  const BladeUpDirection = (positionX, positionY, widthB, heightB, colorB) =>  {
     return {
       x: positionX,
       y: positionY,
       width: widthB,
       height: heightB,
-      valocityX: 0,
-      valocityY: 0,
       color: colorB
     }
   }
 
-  const bladeAction = {
+  const bladeUpDirectionAction = {
     drawitem(context, blade){
       context.fillStyle = blade.color
-      context.fillRect(blade.x, blade.y, blade.width, blade.height)
+      context.beginPath()
+      context.moveTo(blade.x + blade.width/2, blade.y)
+      context.lineTo(blade.x, blade.y + blade.height)
+      context.lineTo(blade.x + blade.width, blade.y + blade.height)
+      context.lineTo(blade.x + blade.width/2, blade.y)
+      context.fill()
+      context.closePath()
     }
   }
 
-  Blade.drawitem = bladeAction.drawitem
+  BladeUpDirection.drawitem = bladeUpDirectionAction.drawitem
 
-  const Blades = [Blade(1300, 500, 20, 100, "#222831"), Blade(1600, 400, 100, 200, "#222831"), Blade(1840, 350, 50, 50, "#222831"), Blade(1890, 380, 120, 20, "#222831"), Blade(2200, 350, 200, 20, "#222831"), Blade(2660, 450, 40, 150, "#222831"), Blade(2700, 150, 200, 40, "black")]
+  const BladesUpDirection = [BladeUpDirection(1300, 500, 20, 100, "black"), BladeUpDirection(1600, 400, 100, 200, "black"), BladeUpDirection(1840, 350, 50, 50, "black"), BladeUpDirection(1890, 380, 120, 20, "#222831")]
+
+  //down
+  const BladeDownDirection = (positionX, positionY, widthB, heightB, colorB) =>  {
+    return {
+      x: positionX,
+      y: positionY,
+      width: widthB,
+      height: heightB,
+      color: colorB
+    }
+  }
+
+  const bladeDownDirectionAction = {
+    drawitem(context, blade){
+      context.fillStyle = blade.color
+      context.beginPath()
+      context.moveTo(blade.x + blade.width/2, blade.y)
+      context.lineTo(blade.x, blade.y - blade.height)
+      context.lineTo(blade.x + blade.width, blade.y - blade.height)
+      context.lineTo(blade.x + blade.width/2, blade.y)
+      context.fill()
+      context.closePath()
+    }
+  }
+
+  BladeDownDirection.drawitem = bladeDownDirectionAction.drawitem
+
+  const BladesDownDirection = [BladeDownDirection(2220, 370, 30, 20, "#222831"), BladeDownDirection(2250, 370, 30, 20, "#222831"), BladeDownDirection(2280, 370, 30, 20, "#222831"), BladeDownDirection(2310, 370, 30, 20, "#222831"), BladeDownDirection(2340, 370, 30, 20, "#222831"), BladeDownDirection(2700, 120, 30, 20, "#222831"), BladeDownDirection(2730, 120, 30, 20, "#222831"), BladeDownDirection(2760, 120, 30, 20, "#222831"), BladeDownDirection(2790, 120, 30, 20, "#222831"), BladeDownDirection(2820, 120, 30, 20, "#222831"), BladeDownDirection(2850, 120, 30, 20, "#222831")]
+
+  //left
+  const BladeLeftDirection = (positionX, positionY, widthB, heightB, colorB) =>  {
+    return {
+      x: positionX,
+      y: positionY,
+      width: widthB,
+      height: heightB,
+      color: colorB
+    }
+  }
+
+  const bladeLeftDirectionAction = {
+    drawitem(context, blade){
+      context.fillStyle = blade.color
+      context.beginPath()
+      context.moveTo(blade.x, blade.y + blade.height/2)
+      context.lineTo(blade.x + blade.width, blade.y)
+      context.lineTo(blade.x + blade.width, blade.y + blade.height)
+      context.lineTo(blade.x, blade.y + blade.height/2)
+      context.fill()
+      context.closePath()
+    }
+  }
+
+  BladeLeftDirection.drawitem = bladeLeftDirectionAction.drawitem
+
+  const BladesLeftDirection = [BladeLeftDirection(2660, 450, 40, 30, "#222831"), BladeLeftDirection(2660, 480, 40, 30, "#222831"), BladeLeftDirection(2660, 510, 40, 30, "#222831"), BladeLeftDirection(2660, 540, 40, 30, "#222831"), BladeLeftDirection(2660, 570, 40, 30, "#222831")]
+
+
+
+  //coins
+  const Coin = (positionX, positionY) =>  {
+    return {
+      x: positionX,
+      y: positionY,
+      width: 18,
+      height: 28,
+    }
+  }
+
+  const CoinAction = {
+    drawitem(context, coin){
+      context.fillStyle = "#222831"
+      context.fillRect(coin.x, coin.y, coin.width, coin.height)
+    }
+  }
+
+  Coin.drawitem = CoinAction.drawitem
+
+  const Coins = [Coin(650, 300), Coin(690, 300), Coin(730, 300), Coin(1250, 350), Coin(1290, 350), Coin(1330, 350), Coin(1470, 270), Coin(1630, 250), Coin(1670, 250), Coin(1710, 250), Coin(1970, 350), Coin(2010, 350), Coin(2300, 400), Coin(2300, 450), Coin(2300, 500), Coin(2250, 250 ), Coin(2290, 250), Coin(2360, 250), Coin(2750, 400 ), Coin(2860, 400) ]
+
+
 
   return (
     <div>
@@ -181,10 +265,16 @@ function Items ({startGame, setStartGame}){
         Platform={Platform}
         Platforms={Platforms}
         enemy={enemy}
-        Blade={Blade}
-        Blades={Blades}
+        BladeUpDirection={BladeUpDirection}
+        BladesUpDirection={BladesUpDirection}
+        BladeDownDirection={BladeDownDirection}
+        BladesDownDirection={BladesDownDirection}
+        BladeLeftDirection={BladeLeftDirection}
+        BladesLeftDirection={BladesLeftDirection}
         startGame={startGame}
         setStartGame={setStartGame}
+        Coin={Coin}
+        Coins={Coins}
       />
     </div>
   );

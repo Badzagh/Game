@@ -6,7 +6,7 @@
     top: 100px;
     margin-left: auto;
     width: 500px;
-    height: 350px;
+    height: 400px;
     margin-right: auto;
     text-align: center;
     background-color: wheat;
@@ -33,17 +33,18 @@
     flex-direction: row;
     justify-content: space-between;
 }
-.container-button {
+.container-directions-button {
     display: flex;
     flex-direction: column;
     height: 63px;
     justify-content: space-between;
 }
-.button {
+.directions-button {
     background-color: black;
     color: wheat;
     border: 2px solid gray;
     width: 25px;
+    height: 22px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -54,6 +55,7 @@ button {
     width: 90px;
     height: 30px;
     border-radius: 5px;
+    margin-top: 20px;
 }
 .popup-restart {
     position: absolute;
@@ -63,10 +65,12 @@ button {
     top: 200px;
     margin-left: auto;
     width: 500px;
-    height: 100px;
+    height: 150px;
     margin-right: auto;
     text-align: center;
     background-color: wheat;
+    border-radius: 35px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 .popup-restart-hidden {
     position: absolute;
