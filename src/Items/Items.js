@@ -124,7 +124,7 @@ function Items ({startGame, setStartGame}){
 
   Platform.drawitem = PlatformAction.drawitem
 
-  const Platforms = [Platform(600, 350), Platform(1200, 400), Platform(1570, 300), Platform(1840, 400), Platform(2200, 300), Platform(2700, 450),Platform(3100, 400)]
+  const Platforms = [Platform(600, 350), Platform(1200, 400), Platform(1565, 300), Platform(1840, 400), Platform(2200, 300), Platform(2700, 450),Platform(3100, 400)]
 
 
   ////enemy
@@ -174,7 +174,7 @@ function Items ({startGame, setStartGame}){
 
   BladeUpDirection.drawitem = bladeUpDirectionAction.drawitem
 
-  const BladesUpDirection = [BladeUpDirection(1300, 500, 20, 100, "black"), BladeUpDirection(1600, 400, 100, 200, "black"), BladeUpDirection(1840, 350, 50, 50, "black"), BladeUpDirection(1890, 380, 120, 20, "#222831")]
+  const BladesUpDirection = [BladeUpDirection(1300, 500, 20, 100, "black"), BladeUpDirection(1600, 400, 100, 200, "black"), BladeUpDirection(1840, 350, 50, 50, "black"), BladeUpDirection(1890, 380, 110, 20, "#222831")]
 
   //down
   const BladeDownDirection = (positionX, positionY, widthB, heightB, colorB) =>  {

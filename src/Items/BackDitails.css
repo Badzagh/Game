@@ -82,6 +82,7 @@
 .eye-screla {
   position: absolute;
   z-index: 1;
+  background-color: white; 
   border-radius: 50%; 
   width: 25px; 
   height: 25px;
@@ -100,7 +101,8 @@
 }
 .eye-pupil div{
   position: absolute; 
-  z-index: 2; 
+  z-index: 2;
+  background-color: white;  
   left: 3px; 
   top: 2px; 
   border-radius: 50%; 

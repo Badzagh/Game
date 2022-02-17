@@ -17,8 +17,6 @@ function App({light, player, Platform, Platforms, enemy, BladeUpDirection, Blade
   const [playerXPosition, setPlayerXPosition] = useState(0)
   const [playerYPosition, setPlayerYPosition] = useState(0)
   const [EyeX, setEyeX] = useState(0)
-  const [pupilColor, setPupilColor] = useState("black")
-  const [scleraColor, setScleraColor] = useState("black")
   const [CoinsCount, setCoinsCount] = useState(0)
   
   ////
@@ -156,23 +154,6 @@ function App({light, player, Platform, Platforms, enemy, BladeUpDirection, Blade
                 coin.x -= 8
               })
               enemy.x -= 8
-            } else if(keys.left.pressed) {
-              Platforms.forEach((platform) => {
-                platform.x += 8
-              })
-              BladesUpDirection.forEach((blade) => {
-                blade.x += 8
-              })
-              BladesDownDirection.forEach((blade) => {
-                blade.x += 8
-              })
-              BladesLeftDirection.forEach((blade) => {
-                blade.x += 8
-              })
-              Coins.forEach((coin) => {
-                coin.x += 8
-              })
-              enemy.x += 8
             } 
           }
         } 
@@ -193,11 +174,16 @@ function App({light, player, Platform, Platforms, enemy, BladeUpDirection, Blade
           if(player.x + player.width + player.valocityX >= blade.x && player.x <= blade.x + blade.width &&
             player.y + player.height + player.valocityY >= blade.y && player.y <= blade.y + blade.height
             ){
+
             player.eyeColor = "red"
+            player.valocityX = 0
+
             light.x = player.x + 100
             light.y = player.y + 50
+            
             setNotLooseYet(false)
             gameOver = true
+            
             Platforms.forEach((platform) => {
               platform.x -= 0
               Move = true
@@ -282,16 +268,6 @@ function App({light, player, Platform, Platforms, enemy, BladeUpDirection, Blade
       } else {
         enemy.color = "#222831"
       }
-
-      if(light.x <= Platforms[0].x + Platforms[0].width && light.x >= Platforms[0].x + 10 &&
-        light.y <= 385 && light.y >= 360
-        ){
-        setPupilColor("white")
-        setScleraColor("white")
-      } else {
-        setPupilColor("black")
-        setScleraColor("black")
-      }
     });
 
     window.addEventListener('keydown', ({key}) => {
@@ -335,7 +311,7 @@ function App({light, player, Platform, Platforms, enemy, BladeUpDirection, Blade
   return (
     <div>
       <ModalRestart notLooseYet={notLooseYet} setNotLooseYet={setNotLooseYet} winner={winner} CoinsCount={CoinsCount} />
-      <BackDitails playerXPosition={playerXPosition} playerYPosition={playerYPosition} EyeX={EyeX} scleraColor={scleraColor} pupilColor={pupilColor} Coins={Coins}/>
+      <BackDitails playerXPosition={playerXPosition} playerYPosition={playerYPosition} EyeX={EyeX} Coins={Coins}/>
       <canvas ref={canvasRef} id="canvas"/>
     </div>
   );

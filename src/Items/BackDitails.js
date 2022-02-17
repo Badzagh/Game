@@ -1,6 +1,6 @@
 import "./BackDitails.css"
 
-const BackDitails = ({playerXPosition, playerYPosition, EyeX, scleraColor, pupilColor, Coins}) => {
+const BackDitails = ({playerXPosition, playerYPosition, EyeX, Coins}) => {
 
     return (
         <div className="BackDitails">
@@ -14,9 +14,9 @@ const BackDitails = ({playerXPosition, playerYPosition, EyeX, scleraColor, pupil
             </div>
             <div className="disc" style={{left: playerXPosition + 5, top: playerYPosition }}></div>
             <div className="eye-container" style={{left: EyeX + 50}}>
-                <div className="eye-screla" style={{backgroundColor: scleraColor}}>
+                <div className="eye-screla">
                 <div  className="eye-pupil">
-                    <div style={{backgroundColor: pupilColor}}></div>
+                    <div></div>
                 </div>
                 </div>
             </div>
